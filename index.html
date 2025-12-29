@@ -148,7 +148,136 @@
     z-index: 1;">
     </div>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+<style>
+/* 1. 顶置容器：确保按钮位于封面最上方中央 */
+.top-research-wrapper {
+    position: absolute; /* 如果封面是相对定位，它会停留在封面顶部；若是 fixed 则随页面滚动 */
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* 确保在所有元素之上 */
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* 2. 按钮样式：贴合 ArtiMuse 的玻璃质感 */
+.uni-expand-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.uni-expand-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* 3. 展开内容盒子 */
+.uni-content-box {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 12px;
+    background: rgba(15, 23, 42, 0.7); /* 深色半透明，呼应海报底色 */
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+    padding: 0 20px;
+}
+
+.uni-content-box.active {
+    max-height: 200px; /* 足够容纳文本的高度 */
+    opacity: 1;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. 文字与链接样式 */
+.uni-text {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+/* 呼应 ArtiMuse 图片中的三色渐变 */
+.uni-gradient-text {
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #a55eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+.uni-link {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+
+.uni-link:hover {
+    color: #93c5fd;
+}
+</style>
+
+<div class="top-research-wrapper">
+    <button class="uni-expand-btn" onclick="toggleUniResearch()">
+        <i class="fas fa-search-plus" id="uni-icon"></i> 
+        <span>More Research</span>
+    </button>
+    
+    <div id="uni-content" class="uni-content-box">
+        <p class="uni-text">
+            <p class="uni-text" style="color: white;">
+    🔍 <span class="uni-gradient-text">UniPercept</span>: Towards Unified Perceptual-Level Image Understanding across Aesthetics, Quality, Structure, and Texture
+</p>
+        </p>
+        <a href="https://thunderbolt215.github.io/Unipercept-project/" target="_blank" class="uni-link">
+            Explore UniPercept Project <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+function toggleUniResearch() {
+    const content = document.getElementById('uni-content');
+    const icon = document.getElementById('uni-icon');
+    const btnText = document.querySelector('.uni-expand-btn span');
+    
+    content.classList.toggle('active');
+    
+    if (content.classList.contains('active')) {
+        icon.className = 'fas fa-search-minus';
+        btnText.innerText = 'Show Less';
+    } else {
+        icon.className = 'fas fa-search-plus';
+        btnText.innerText = 'More Research';
+    }
+}
+</script>
 
     <!-- Main content -->
     <div class="hero-body" style="position: relative; z-index: 2;">
@@ -300,12 +429,12 @@
           </span>
           <!-- Huggingface Demo Link. -->
           <span class="link-block">
-            <a href="" target="_blank"
+            <a href="https://huggingface.co/datasets/Thunderbolt215215/ArtiMuse-10K" target="_blank"
               class="external-link button is-normal is-rounded has-background-white has-text-black">
               <span class="icon">
                 <img src="assets/artimuse/hf-logo.svg" style="display:block;width:330px;height:240px" />
               </span>
-              <span>Dataset (upcoming)</span>
+              <span>ArtiMuse-10K Dataset</span>
             </a>
           </span>
         </div>
@@ -327,6 +456,30 @@
               📰 News & Updates
             </h2>
             <ul class="content" style="list-style: none; padding-left: 0;">
+
+              <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+              <span style="font-size: 1.4rem; margin-right: 0.75rem; color: #e11d48;">🔥</span>
+              <div>
+                <p style="margin-bottom: 0.3rem; font-weight: 600; color: #1a202c;">Dec 29, 2025</p>
+                <p style="margin: 0;">
+                  Building upon <strong>ArtiMuse</strong>, we introduce <strong>UniPercept</strong>, a comprehensive follow-up work providing a meticulous study on <strong>perceptual-level image understanding</strong> (IAA, IQA, ISTA).
+                </p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                  [<a href="https://arxiv.org/abs/2512.21675" style="color: #2563eb; text-decoration: none;">Technical Report</a>] 
+                  [<a href="https://thunderbolt215.github.io/Unipercept-project/" style="color: #2563eb; text-decoration: none;">Project Page</a>] 
+                  [<a href="https://huggingface.co/datasets/Thunderbolt215215/UniPercept-Bench" style="color: #2563eb; text-decoration: none;">UniPercept-Bench</a>] 
+                  [<a href="https://huggingface.co/Thunderbolt215215/UniPercept" style="color: #2563eb; text-decoration: none;">UniPercept Model</a>]
+                </p>
+              </div>
+            </li>
+
+            <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+              <span style="font-size: 1.4rem; margin-right: 0.75rem; color: #2563eb;">🚀</span>
+              <div>
+                <p style="margin-bottom: 0.3rem; font-weight: 600; color: #1a202c;">Dec 29, 2025</p>
+                <p style="margin: 0;">The test set of the <a href="https://huggingface.co/datasets/Thunderbolt215215/ArtiMuse-10K" style="color: #2563eb; text-decoration: none; font-weight: 600;">ArtiMuse-10K Dataset</a> is now available! 🚀</p>
+              </div>
+            </li>
 
               <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
                 <span style="font-size: 1.4rem; margin-right: 0.75rem; color: #2563eb;">🚀</span>
@@ -1719,7 +1872,25 @@ margin-bottom: 0.5rem;
     <div class="container is-max-desktop content" style="margin-top: 40px; margin-bottom: 20px;">
       <h2 class="title">BibTeX</h2>
       <p>If you find our work useful, please consider citing our paper:</p>
-      <pre><code></code></pre>
+      <pre><code>@misc{cao2025uniperceptunifiedperceptuallevelimage,
+      title={UniPercept: Towards Unified Perceptual-Level Image Understanding across Aesthetics, Quality, Structure, and Texture}, 
+      author={Shuo Cao and Jiayang Li and Xiaohui Li and Yuandong Pu and Kaiwen Zhu and Yuanting Gao and Siqi Luo and Yi Xin and Qi Qin and Yu Zhou and Xiangyu Chen and Wenlong Zhang and Bin Fu and Yu Qiao and Yihao Liu},
+      year={2025},
+      eprint={2512.21675},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2512.21675}, 
+}
+
+@misc{cao2025artimusefinegrainedimageaesthetics,
+      title={ArtiMuse: Fine-Grained Image Aesthetics Assessment with Joint Scoring and Expert-Level Understanding}, 
+      author={Shuo Cao and Nan Ma and Jiayang Li and Xiaohui Li and Lihao Shao and Kaiwen Zhu and Yu Zhou and Yuandong Pu and Jiarui Wu and Jiaquan Wang and Bo Qu and Wenhai Wang and Yu Qiao and Dajuin Yao and Yihao Liu},
+      year={2025},
+      eprint={2507.14533},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.14533}, 
+}</code></pre>
 
       <!-- <p>Our related projects: <a href="https://vchitect.github.io/Evaluation-Agent-project/" target="_blank"
           style="color: #007BFF;">Evaluation Agent</a></p>
